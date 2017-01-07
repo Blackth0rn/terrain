@@ -1,10 +1,3 @@
-// utility function to convert args to strings and then console.log them
-// const puts = (...any) => console.log(...any.map((item) => {return item.toString()}));
-function puts(...any) {
-	console.log(...any.map(function(item) {return item.toString()}));
-}
-
-
 class HeightMap {
 	constructor(exp) {
 		this.resolution = Math.pow(2, exp)+1;
@@ -127,13 +120,4 @@ class HeightMap {
 		}
 		this.capMap();
 	}
-
 }
-
-const exp = 2; // 2^2+1 things, 5x5
-const hm = new HeightMap(exp);
-
-hm.generateTerrain();
-puts( hm );
-
-
