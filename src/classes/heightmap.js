@@ -1,11 +1,12 @@
-class HeightMap {
-	constructor(exp) {
+export default class HeightMap {
+	constructor(exp, jitter) {
 		this.resolution = Math.pow(2, exp)+1;
 		this.map = new Array(this.resolution*this.resolution);
 		this.exponent = exp;
 		this.last = this.resolution - 1;
 		this.maxHeight = 1.0;
 		this.minHeight = 0.0;
+		this.jitter = jitter;
 		this.reset();
 	}
 
@@ -82,16 +83,16 @@ class HeightMap {
 		const right = this.avg( botR, topR );
 
 		// set the midpoint values to the midpoint locations
-		this.setVal(midX, minY, bot + this.jitter(jitterMult));
-		this.setVal(midX, maxY, top + this.jitter(jitterMult));
-		this.setVal(minX, midY, left + this.jitter(jitterMult));
-		this.setVal(maxX, midY, right + this.jitter(jitterMult));
+		this.setVal(midX, minY, bot + this.addJitter(jitterMult));
+		this.setVal(midX, maxY, top + this.addJitter(jitterMult));
+		this.setVal(minX, midY, left + this.addJitter(jitterMult));
+		this.setVal(maxX, midY, right + this.addJitter(jitterMult));
 
 		// set the center to the average of the midpoint values
 		this.setVal(midX, midY, this.avg(top, bot, left, right));
 	}
 
-	jitter(multiplier) {
+	addJitter(multiplier) {
 		return ((Math.random() - ((this.maxHeight - this.minHeight) / 2)) * 2) * multiplier;
 	}
 
@@ -114,7 +115,7 @@ class HeightMap {
 					const rightX = leftX + chunkMaxDimension;
 					const bottomY = y * chunkMaxDimension;
 					const topY = bottomY + chunkMaxDimension;
-					this.displace(leftX, rightX, bottomY, topY, 0.0)
+					this.displace(leftX, rightX, bottomY, topY, this.jitter)
 				}
 			}
 		}
